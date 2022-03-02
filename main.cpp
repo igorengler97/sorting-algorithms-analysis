@@ -1,10 +1,8 @@
 #include "Header.h"
 
-//using namespace fs = std::filesystem;
-
 int main()
 {
-
+	std::cout << "Select the folder containing the files to be sorted" << std::endl;
 	// Initialize COM object for folder selection
 	HRESULT hResultCom = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
 
@@ -48,11 +46,8 @@ int main()
 				}
 			}
 		}
-
 	}
-
-	std::cout << "All files have been sorted!" << std::endl;
-
+	std::cout << "All files have been sorted!" << std::endl <<"Press any key to close";
 
 	getchar();
 }
@@ -60,7 +55,6 @@ int main()
 // iterates thru folder and list files
 VOID GetFolderFiles(PWSTR folderName)
 {
-
 	WIN32_FIND_DATA fileData;
 
 	wchar_t newFolder[1024];
@@ -83,15 +77,10 @@ VOID GetFolderFiles(PWSTR folderName)
 		else if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			continue;
 
-
 		FillVectorFromFile(fileData.cFileName);
-		//::MessageBox(nullptr, fileData.cFileName, L"CurrentFile", MB_OK);
-
 
 	} while (::FindNextFile(hCurFile, &fileData) != 0);
-
 	return;
-
 }
 
 
@@ -99,10 +88,6 @@ VOID GetFolderFiles(PWSTR folderName)
 VOID FillVectorFromFile(const wchar_t* fileName)
 {
 	std::vector<int> myVector;
-	//std::vector<int> myVector2;
-
-	//char bFile[1024];
-	//wcstombs_s(nullptr, bFile, fileName, 1024);
 
 	std::ifstream inFile(fileName);
 	std::string line;
@@ -110,10 +95,8 @@ VOID FillVectorFromFile(const wchar_t* fileName)
 	// read each line and conver to int
 	while (std::getline(inFile, line)) {
 		myVector.push_back(std::stoi(line));
-		//myVector2.push_back(std::stoi(line));
 	}
 		
-
 	std::wcout << fileName << std::endl;
 
 	auto start = std::chrono::high_resolution_clock::now();
@@ -127,8 +110,6 @@ VOID FillVectorFromFile(const wchar_t* fileName)
 	std::cout << std::endl;
 
 	//print(myVector);
-
-
 }
 
 

@@ -2,46 +2,50 @@
 
 void insertion_sort(std::vector<int>& vec)
 {
-	for (std::size_t j = 1; j < vec.size(); j++)
+	int i, j;
+	int value;
+	for (i = 1; i < vec.size(); i++)
 	{
-		int key = vec[j];
-		int i = j - 1;
+		value = vec[i];
+		j = i - 1;
 
-		while (i >= 0 && vec[i] > key)
+		while (j >= 0 && vec[i] > value)
 		{
-			vec[i + 1] = vec[i];
-			i--;
+			vec[j + 1] = vec[j];
+			j--;
 		}
-		vec[i + 1] = key;
+		vec[j + 1] = value;
 	}
 }
 
 void shell_sort(std::vector<int>& vec)
 {
 	int h = 1;
-	int inner, outer;
+	int i, j;
 	int value;
-	while (h < vec.size() / 3)
+	while (h < vec.size())
 	{
 		h = h * 3 + 1;
 		//std::cout << h << " ";
 	}
+	//std::cout<<std::endl;
 	while (h > 0)
 	{
-		for (outer = h; outer < vec.size(); outer++)
+		for (i = h; i < vec.size(); i++)
 		{
-			value = vec[outer];
-			inner = outer;
-			while (inner > h - 1 && vec[inner - h] >= value)
+			value = vec[i];
+			j = i;
+			while (j > h - 1 && vec[j - h] >= value)
 			{
-				vec[inner] = vec[inner - h];
-				inner = inner - h;
+				vec[j] = vec[j - h];
+				j = j - h;
 			}
-
-			vec[inner] = value;
+			vec[j] = value;
 		}
-		h = (h - 1) / 3;
+		h = h/3;
+		//std::cout << h << " ";
 	}
+	//std::cout << std::endl;
 }
 
 void print(std::vector<int>& vec)
