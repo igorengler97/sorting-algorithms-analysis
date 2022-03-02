@@ -13,4 +13,5 @@
 VOID GetFolderFiles(PWSTR folderName);
 void insertion_sort(std::vector<int>& vec);
 void print(std::vector<int>& vec);
+void shell_sort(std::vector<int>& vec);
 VOID FillVectorFromFile(const wchar_t* fileName);

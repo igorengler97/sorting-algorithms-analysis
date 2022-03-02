@@ -100,6 +100,7 @@ VOID GetFolderFiles(PWSTR folderName)
 VOID FillVectorFromFile(const wchar_t* fileName)
 {
 	std::vector<int> myVector;
+	//std::vector<int> myVector2;
 
 	//char bFile[1024];
 	//wcstombs_s(nullptr, bFile, fileName, 1024);
@@ -108,19 +109,26 @@ VOID FillVectorFromFile(const wchar_t* fileName)
 	std::string line;
 
 	// read each line and conver to int
-	while (std::getline(inFile, line))
+	while (std::getline(inFile, line)) {
 		myVector.push_back(std::stoi(line));
+		//myVector2.push_back(std::stoi(line));
+	}
+		
 
 	std::wcout << fileName << std::endl;
 
 	auto start = std::chrono::high_resolution_clock::now();
-	insertion_sort(myVector);
+	shell_sort(myVector);
+	//insertion_sort(myVector2);
 	auto elapsed = std::chrono::high_resolution_clock::now() - start;
 
 	long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-	std::cout << milliseconds << std::endl;
+	std::cout << milliseconds <<" ms "<< std::endl;
 	std::cout << std::endl;
+
+	//print(myVector);
+
 
 }
 
