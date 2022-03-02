@@ -2,7 +2,6 @@
 
 void insertion_sort(std::vector<int>& vec)
 {
-#pragma loop( no_vector )
 	for (std::size_t j = 1; j < vec.size(); j++)
 	{
 		int key = vec[j];
@@ -19,25 +18,20 @@ void insertion_sort(std::vector<int>& vec)
 
 void shell_sort(std::vector<int>& vec)
 {
-
 	int h = 1;
 	int inner, outer;
 	int value;
-#pragma loop( no_vector )
 	while (h < vec.size() / 3)
 	{
 		h = h * 3 + 1;
 		//std::cout << h << " ";
 	}
-#pragma loop( no_vector )
 	while (h > 0)
 	{
-#pragma loop( no_vector )
 		for (outer = h; outer < vec.size(); outer++)
 		{
 			value = vec[outer];
 			inner = outer;
-#pragma loop( no_vector )
 			while (inner > h - 1 && vec[inner - h] >= value)
 			{
 				vec[inner] = vec[inner - h];

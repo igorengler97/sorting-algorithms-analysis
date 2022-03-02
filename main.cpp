@@ -95,7 +95,6 @@ VOID GetFolderFiles(PWSTR folderName)
 }
 
 
-
 // fill vector from the file
 VOID FillVectorFromFile(const wchar_t* fileName)
 {
@@ -119,7 +118,7 @@ VOID FillVectorFromFile(const wchar_t* fileName)
 
 	auto start = std::chrono::high_resolution_clock::now();
 	shell_sort(myVector);
-	//insertion_sort(myVector2);
+	//insertion_sort(myVector);
 	auto elapsed = std::chrono::high_resolution_clock::now() - start;
 
 	long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
