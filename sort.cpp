@@ -23,11 +23,13 @@ void shell_sort(std::vector<int>& vec)
 	int h = 1;
 	int i, j;
 	int value;
-	while (h < vec.size())
+	while (h < vec.size()/3)
 	{
-		h = h * 3 + 1;
+		h = h * 3 + 1;  
+		//h = (pow(3.0, double(h)) - 1) / 2;
 		//std::cout << h << " ";
 	}
+	//std::cout << h << " ";
 	//std::cout<<std::endl;
 	while (h > 0)
 	{
@@ -54,5 +56,5 @@ void print(std::vector<int>& vec)
 	{
 		std::cout << vec[i] << " ";
 	}
-	std::cout << "\n";
+	std::cout << std::endl;
 }

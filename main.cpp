@@ -1,7 +1,9 @@
 #include "Header.h"
 
+
 int main()
 {
+	std::ofstream of("myfile.csv", std::ios::app);
 	std::cout << "Select the folder containing the files to be sorted" << std::endl;
 	// Initialize COM object for folder selection
 	HRESULT hResultCom = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
@@ -47,7 +49,7 @@ int main()
 			}
 		}
 	}
-	std::cout << "All files have been sorted!" << std::endl <<"Press any key to close";
+	std::cout << "All files have been sorted!" << std::endl <<"Press ENTER key to close";
 
 	getchar();
 }
@@ -78,6 +80,7 @@ VOID GetFolderFiles(PWSTR folderName)
 			continue;
 
 		FillVectorFromFile(fileData.cFileName);
+		
 
 	} while (::FindNextFile(hCurFile, &fileData) != 0);
 	return;
@@ -92,24 +95,29 @@ VOID FillVectorFromFile(const wchar_t* fileName)
 	std::ifstream inFile(fileName);
 	std::string line;
 
-	// read each line and conver to int
-	while (std::getline(inFile, line)) {
-		myVector.push_back(std::stoi(line));
+	std::wstring ws(fileName);
+	std::string name(ws.begin(), ws.end());
+
+	if (name.substr(name.find_last_of(".") + 1) == "txt") {
+		// read each line and conver to int
+		while (std::getline(inFile, line)) {
+			myVector.push_back(std::stoi(line));
+		}
+
+		std::wcout << fileName << std::endl;
+
+		auto start = std::chrono::high_resolution_clock::now();
+		shell_sort(myVector);
+		//insertion_sort(myVector);
+		auto elapsed = std::chrono::high_resolution_clock::now() - start;
+
+		long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+		std::cout << milliseconds << " ms " << std::endl;
+		std::cout << std::endl;
+		std::ofstream of("out.csv", std::ios::app);
+		of << name << ";" << milliseconds << ";" << std::endl;
+		of.close();
 	}
-		
-	std::wcout << fileName << std::endl;
-
-	auto start = std::chrono::high_resolution_clock::now();
-	shell_sort(myVector);
-	//insertion_sort(myVector);
-	auto elapsed = std::chrono::high_resolution_clock::now() - start;
-
-	long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
-
-	std::cout << milliseconds <<" ms "<< std::endl;
-	std::cout << std::endl;
-
-	//print(myVector);
+	
 }
-
-
