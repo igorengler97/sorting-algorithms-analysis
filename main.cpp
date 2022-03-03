@@ -106,12 +106,15 @@ VOID FillVectorFromFile(const wchar_t* fileName)
 
 		std::cout << name << std::endl;
 
-		auto start = std::chrono::high_resolution_clock::now();
+		//auto start = std::chrono::high_resolution_clock::now();
+		auto start = std::chrono::steady_clock::now();
 		//shell_sort(myVector); aux_name = 0;
 		insertion_sort(myVector); aux_name = 1;
-		auto elapsed = std::chrono::high_resolution_clock::now() - start;
+		auto elapsed = std::chrono::steady_clock::now();
+		//auto elapsed = std::chrono::high_resolution_clock::now() - start;
 
-		long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+		long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed-start).count();
+		double milliseconds = double(microseconds) / 1000;
 
 		std::cout << milliseconds << " ms " << std::endl;
 		std::cout << std::endl;
