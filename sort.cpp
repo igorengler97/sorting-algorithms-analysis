@@ -21,15 +21,16 @@ void insertion_sort(std::vector<int>& vec)
 void shell_sort(std::vector<int>& vec)
 {
 	int h = 1;
-	int i, j;
+	int i, j, k = 1;
 	int value;
 	while (h < vec.size()/3)
 	{
-		h = h * 3 + 1;  
-		//h = (pow(3.0, double(h)) - 1) / 2;
+		//h = h * 3 + 1;  
+		h = (pow(3.0, double(k)) - 1) / 2;
+		k++;
 		//std::cout << h << " ";
 	}
-	std::cout << h << " ";
+	//std::cout << h << " ";
 	//std::cout<<std::endl;
 	while (h > 0)
 	{
@@ -45,9 +46,9 @@ void shell_sort(std::vector<int>& vec)
 			vec[j] = value;
 		}
 		h = h/3;
-		std::cout << h << " ";
+		//std::cout << h << " ";
 	}
-	std::cout << std::endl;
+	//std::cout << std::endl;
 }
 
 void print(std::vector<int>& vec)
