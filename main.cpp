@@ -3,7 +3,6 @@
 
 int main()
 {
-	std::ofstream of("myfile.csv", std::ios::app);
 	std::cout << "Select the folder containing the files to be sorted" << std::endl;
 	// Initialize COM object for folder selection
 	HRESULT hResultCom = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
@@ -90,6 +89,7 @@ VOID GetFolderFiles(PWSTR folderName)
 // fill vector from the file
 VOID FillVectorFromFile(const wchar_t* fileName)
 {
+	int aux_name;
 	std::vector<int> myVector;
 
 	std::ifstream inFile(fileName);
@@ -104,19 +104,28 @@ VOID FillVectorFromFile(const wchar_t* fileName)
 			myVector.push_back(std::stoi(line));
 		}
 
-		std::wcout << fileName << std::endl;
+		std::cout << name << std::endl;
 
 		auto start = std::chrono::high_resolution_clock::now();
-		shell_sort(myVector);
-		//insertion_sort(myVector);
+		//shell_sort(myVector); aux_name = 0;
+		insertion_sort(myVector); aux_name = 1;
 		auto elapsed = std::chrono::high_resolution_clock::now() - start;
 
 		long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
 		std::cout << milliseconds << " ms " << std::endl;
 		std::cout << std::endl;
-		std::ofstream of("out.csv", std::ios::app);
-		of << name << ";" << milliseconds << ";" << std::endl;
+		std::ofstream of("output.csv", std::ios::app);
+		
+		switch (aux_name) {
+		case 0:
+			of <<"shellsort;" << name << ";" << milliseconds << ";" << std::endl;
+			break;
+		case 1:
+			of << "insertionsort;" << name << "; " << milliseconds << "; " << std::endl;
+			break;
+		}
+
 		of.close();
 	}
 	
