@@ -25,13 +25,9 @@ void shell_sort(std::vector<int>& vec)
 	int value;
 	while (h < vec.size()/3)
 	{
-		//h = h * 3 + 1;  
 		h = (pow(3.0, double(k)) - 1) / 2;
 		k++;
-		//std::cout << h << " ";
 	}
-	//std::cout << h << " ";
-	//std::cout<<std::endl;
 	while (h > 0)
 	{
 		for (i = h; i < vec.size(); i++)
@@ -46,9 +42,7 @@ void shell_sort(std::vector<int>& vec)
 			vec[j] = value;
 		}
 		h = h/3;
-		//std::cout << h << " ";
 	}
-	//std::cout << std::endl;
 }
 
 void print(std::vector<int>& vec)

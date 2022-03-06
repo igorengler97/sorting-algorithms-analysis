@@ -42,7 +42,7 @@ int main()
 
 					if (!SetCurrentDirectory(folderName))
 						::MessageBox(nullptr, L"Failed to set current directory", L"Error", MB_OK);
-
+					system("CLS");
 					GetFolderFiles(folderName);
 				}
 			}
@@ -56,6 +56,12 @@ int main()
 // iterates thru folder and list files
 VOID GetFolderFiles(PWSTR folderName)
 {
+	int opt;
+	std::cout << "press 1 for ShellSort and 2 for InsertionSort: ";
+	do {
+		std::cin >> opt;
+	} while (opt < 1 || opt > 2);
+	
 	WIN32_FIND_DATA fileData;
 
 	wchar_t newFolder[1024];
@@ -73,63 +79,71 @@ VOID GetFolderFiles(PWSTR folderName)
 			::MessageBox(nullptr, L"Failed to search file", L"ERROR", MB_OK);
 			return;
 		}
-
 		// ignore directory inside directory, e.g (., ..)
 		else if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			continue;
 
-		FillVectorFromFile(fileData.cFileName);
+		FillVectorFromFile(fileData.cFileName, opt);
 		
-
 	} while (::FindNextFile(hCurFile, &fileData) != 0);
 	return;
 }
 
 
 // fill vector from the file
-VOID FillVectorFromFile(const wchar_t* fileName)
+VOID FillVectorFromFile(const wchar_t* fileName, int opt)
 {
 	int aux_name;
+	double milliseconds;
+	long long microseconds;
 	std::vector<int> myVector;
 
 	std::ifstream inFile(fileName);
 	std::string line;
 
 	std::wstring ws(fileName);
-	std::string name(ws.begin(), ws.end());
+	std::string file_name(ws.begin(), ws.end());
 
-	if (name.substr(name.find_last_of(".") + 1) == "txt") {
+	if (file_name.substr(file_name.find_last_of(".") + 1) == "txt") {
 		// read each line and conver to int
 		while (std::getline(inFile, line)) {
 			myVector.push_back(std::stoi(line));
 		}
 
-		std::cout << name << std::endl;
+		std::cout << file_name << std::endl;
 
-		//auto start = std::chrono::high_resolution_clock::now();
-		auto start = std::chrono::steady_clock::now();
-		shell_sort(myVector);
-		//insertion_sort(myVector); 
-		auto elapsed = std::chrono::steady_clock::now();
-		//auto elapsed = std::chrono::high_resolution_clock::now() - start;
-		aux_name = 0;
-		//aux_name = 1;
-		long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed-start).count();
-		double milliseconds = double(microseconds) / 1000;
-
-		std::cout << milliseconds << " ms " << std::endl;
-		std::cout << std::endl;
-		std::ofstream of("output.csv", std::ios::app);
-		
-		switch (aux_name) {
-		case 0:
-			of <<"shellsort;" << name << ";" << milliseconds << ";" << std::endl;
-			break;
-		case 1:
-			of << "insertionsort;" << name << "; " << milliseconds << "; " << std::endl;
-			break;
+		if (opt == 1) {
+			auto start = std::chrono::steady_clock::now();
+			shell_sort(myVector);
+			auto elapsed = std::chrono::steady_clock::now();
+			microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed - start).count();
+			aux_name = 1;
 		}
-		of.close();
+		else if (opt ==2){
+			auto start = std::chrono::steady_clock::now();
+			insertion_sort(myVector);
+			auto elapsed = std::chrono::steady_clock::now();
+			microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed - start).count();
+			aux_name = 2;
+		}
+		milliseconds = double(microseconds) / 1000;
+		std::cout << milliseconds << " ms\n" << std::endl;
+		
+		SaveInFile(aux_name, milliseconds, file_name);	
 	}
 	
+}
+
+VOID SaveInFile(int aux_name, double milliseconds, std::string file_name) {
+	std::ofstream of("output.csv", std::ios::app);
+
+	switch (aux_name) {
+	case 1:
+		of << "shellsort;" << file_name << ";" << milliseconds << ";" << std::endl;
+		break;
+	case 2:
+		of << "insertionsort;" << file_name << "; " << milliseconds << "; " << std::endl;
+		break;
+	}
+	of.close();
 }
